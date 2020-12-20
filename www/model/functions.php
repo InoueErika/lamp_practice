@@ -4,48 +4,48 @@ function dd($var){
   var_dump($var);
   exit();
 }
-
+//ログイン成功したら飛ぶ場所
 function redirect_to($url){
   header('Location: ' . $url);
   exit;
 }
-
+//名前（ユーザー名または商品名）を定義（GET）getはURLのパラメーターを取り出す
 function get_get($name){
   if(isset($_GET[$name]) === true){
     return $_GET[$name];
   };
   return '';
 }
-
+//名前（ユーザー名または商品名）を定義（POST）formでpostとして送られた情報
 function get_post($name){
   if(isset($_POST[$name]) === true){
     return $_POST[$name];
   };
   return '';
 }
-
+//?
 function get_file($name){
   if(isset($_FILES[$name]) === true){
     return $_FILES[$name];
   };
   return array();
 }
-
+//既に設定している内容を取得する「get」
 function get_session($name){
   if(isset($_SESSION[$name]) === true){
     return $_SESSION[$name];
   };
   return '';
 }
-
+//$nameにあたるのもを設定する「set」
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
-
+//ログインした際のエラー
 function set_error($error){
   $_SESSION['__errors'][] = $error;
 }
-
+//エラーの初期化と定義
 function get_errors(){
   $errors = get_session('__errors');
   if($errors === ''){
@@ -54,7 +54,7 @@ function get_errors(){
   set_session('__errors',  array());
   return $errors;
 }
-
+//?
 function has_error(){
   return isset($_SESSION['__errors']) && count($_SESSION['__errors']) !== 0;
 }
@@ -71,7 +71,7 @@ function get_messages(){
   set_session('__messages',  array());
   return $messages;
 }
-
+//user_idが空じゃなかったら（ログインできたら）
 function is_logined(){
   return get_session('user_id') !== '';
 }

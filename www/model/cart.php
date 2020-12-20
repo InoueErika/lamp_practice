@@ -1,7 +1,8 @@
 <?php 
+//formで送られた情報を読み取る
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
-
+//どのユーザーが何の商品をカートに入れたのか（cartテーブルはitem.idとuser.idをインサートしている）
 function get_user_carts($db, $user_id){
   $sql = "
     SELECT
@@ -25,7 +26,7 @@ function get_user_carts($db, $user_id){
   ";
   return fetch_all_query($db, $sql);
 }
-
+//?上と何が違う？
 function get_user_cart($db, $user_id, $item_id){
   $sql = "
     SELECT
@@ -61,7 +62,7 @@ function add_cart($db, $user_id, $item_id ) {
   }
   return update_cart_amount($db, $cart['cart_id'], $cart['amount'] + 1);
 }
-
+//user_idをインサートすることでどのユーザーか特定、item_idをインサートすることで商品情報を特定
 function insert_cart($db, $user_id, $item_id, $amount = 1){
   $sql = "
     INSERT INTO
@@ -75,7 +76,7 @@ function insert_cart($db, $user_id, $item_id, $amount = 1){
 
   return execute_query($db, $sql);
 }
-
+//カートの中の商品数をアップデート
 function update_cart_amount($db, $cart_id, $amount){
   $sql = "
     UPDATE
@@ -88,7 +89,7 @@ function update_cart_amount($db, $cart_id, $amount){
   ";
   return execute_query($db, $sql);
 }
-
+//カートの中身をデリート
 function delete_cart($db, $cart_id){
   $sql = "
     DELETE FROM
@@ -105,6 +106,7 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  //商品を購入後、ストック数を減らす
   foreach($carts as $cart){
     if(update_item_stock(
         $db, 
@@ -114,10 +116,10 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
-  
+  //ユーザー情報を消去する
   delete_user_carts($db, $carts[0]['user_id']);
 }
-
+//ユーザー情報を消去する（次回ログインして商品をカートに入れた時、カート内に前回購入した商品を残さないようにするため）
 function delete_user_carts($db, $user_id){
   $sql = "
     DELETE FROM
@@ -129,7 +131,7 @@ function delete_user_carts($db, $user_id){
   execute_query($db, $sql);
 }
 
-
+//カートの中の合計金額
 function sum_carts($carts){
   $total_price = 0;
   foreach($carts as $cart){
@@ -139,14 +141,17 @@ function sum_carts($carts){
 }
 
 function validate_cart_purchase($carts){
+  //商品が選択されていなければエラー
   if(count($carts) === 0){
     set_error('カートに商品が入っていません。');
     return false;
   }
+  //非公開の商品ならエラー
   foreach($carts as $cart){
     if(is_open($cart) === false){
       set_error($cart['name'] . 'は現在購入できません。');
     }
+    //ストックから商品数を引いた数が0より小さければ
     if($cart['stock'] - $cart['amount'] < 0){
       set_error($cart['name'] . 'は在庫が足りません。購入可能数:' . $cart['stock']);
     }

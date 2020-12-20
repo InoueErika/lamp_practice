@@ -7,14 +7,15 @@
 </head>
 <body>
   <?php 
+  //サインアップ、ログイン等　ヘッダーのhtmlを読み込む
   include VIEW_PATH . 'templates/header_logined.php'; 
   ?>
 
   <div class="container">
     <h1>商品管理</h1>
-
+    <!--配列で取得したエラーメッセージや結果を読み込む-->
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-
+    <!--名前、価格、在庫数等の情報をデータベースに送る（インサート）-->
     <form 
       method="post" 
       action="admin_insert_item.php" 
@@ -47,7 +48,7 @@
       <input type="submit" value="商品追加" class="btn btn-primary">
     </form>
 
-
+    <!--上記で情報を取得したら内容を表示-->
     <?php if(count($items) > 0){ ?>
       <table class="table table-bordered text-center">
         <thead class="thead-light">
@@ -60,12 +61,15 @@
           </tr>
         </thead>
         <tbody>
+          <!--配列で情報を取得-->
           <?php foreach($items as $item){ ?>
+          <!--?-->
           <tr class="<?php print(is_open($item) ? '' : 'close_item'); ?>">
             <td><img src="<?php print(IMAGE_PATH . $item['image']);?>" class="item_image"></td>
             <td><?php print($item['name']); ?></td>
             <td><?php print(number_format($item['price'])); ?>円</td>
             <td>
+              <!--ストック変更のための情報をデータベースに送る（アップデート）-->
               <form method="post" action="admin_change_stock.php">
                 <div class="form-group">
                   <!-- sqlインジェクション確認のためあえてtext -->
@@ -73,11 +77,12 @@
                   個
                 </div>
                 <input type="submit" value="変更" class="btn btn-secondary">
+                <!--hiddenでitem_idを指定することで「変更ボタン」を押すと該当の商品のストックを変更することができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
               </form>
             </td>
             <td>
-
+              <!--ステータス変更のための情報をデータベースに送る（アップデート）-->
               <form method="post" action="admin_change_status.php" class="operation">
                 <?php if(is_open($item) === true){ ?>
                   <input type="submit" value="公開 → 非公開" class="btn btn-secondary">
@@ -86,11 +91,13 @@
                   <input type="submit" value="非公開 → 公開" class="btn btn-secondary">
                   <input type="hidden" name="changes_to" value="open">
                 <?php } ?>
+                <!--hiddenでitem_idを指定することで「公開・非公開ボタン」を押すと該当の商品の公開・非公開を変更することができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
               </form>
-
+              <!--商品情報削除のための情報をデータベースに送る（デリート）-->
               <form method="post" action="admin_delete_item.php">
                 <input type="submit" value="削除" class="btn btn-danger delete">
+                <!--hiddenでitem_idを指定することで「削除ボタン」を押すと該当の商品の削除をすることができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
               </form>
 
@@ -100,6 +107,7 @@
         </tbody>
       </table>
     <?php } else { ?>
+      <!--商品情報が何もない状態-->
       <p>商品はありません。</p>
     <?php } ?> 
   </div>
