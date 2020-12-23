@@ -23,21 +23,21 @@ function get_post($name){
   };
   return '';
 }
-//?
+//アップロードされた画像を取得する？
 function get_file($name){
   if(isset($_FILES[$name]) === true){
     return $_FILES[$name];
   };
   return array();
 }
-//既に設定している内容を取得する「get」
+//既に設定している内容を’取得する’「get」
 function get_session($name){
   if(isset($_SESSION[$name]) === true){
     return $_SESSION[$name];
   };
   return '';
 }
-//$nameにあたるのもを設定する「set」
+//$name（ユーザー名、商品名に拘らず）にあたるのもを’設定する’「set」
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
@@ -54,15 +54,15 @@ function get_errors(){
   set_session('__errors',  array());
   return $errors;
 }
-//?
+//エラーがあった場合の変数（「！＝＝」エラーが０ではなかったら）
 function has_error(){
   return isset($_SESSION['__errors']) && count($_SESSION['__errors']) !== 0;
 }
-
+//処理完了した場合のメッセージを設定する
 function set_message($message){
   $_SESSION['__messages'][] = $message;
 }
-
+//処理完了した場合のメッセージを取得する（表示のする）
 function get_messages(){
   $messages = get_session('__messages');
   if($messages === ''){
@@ -75,7 +75,7 @@ function get_messages(){
 function is_logined(){
   return get_session('user_id') !== '';
 }
-
+//アップロードされたファイル名を取得する？
 function get_upload_filename($file){
   if(is_valid_upload_image($file) === false){
     return '';
@@ -84,15 +84,15 @@ function get_upload_filename($file){
   $ext = PERMITTED_IMAGE_TYPES[$mimetype];
   return get_random_string() . '.' . $ext;
 }
-
+//文字の長さの設定？
 function get_random_string($length = 20){
   return substr(base_convert(hash('sha256', uniqid()), 16, 36), 0, $length);
 }
-
+//アップロードされたファイルがサーバー上で保存されている時のファイル名
 function save_image($image, $filename){
   return move_uploaded_file($image['tmp_name'], IMAGE_DIR . $filename);
 }
-
+//画像の削除
 function delete_image($filename){
   if(file_exists(IMAGE_DIR . $filename) === true){
     unlink(IMAGE_DIR . $filename);
@@ -134,6 +134,7 @@ function is_valid_upload_image($image){
   }
   return true;
 }
+//h関数（特殊文字を処理させない）
 function h($str) {
  
   return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');

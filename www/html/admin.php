@@ -17,6 +17,6 @@ $user = get_login_user($db);
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
-
+//データベースから取得した全ての商品情報
 $items = get_all_items($db);
 include_once VIEW_PATH . '/admin_view.php';

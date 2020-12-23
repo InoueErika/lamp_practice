@@ -151,14 +151,14 @@ function delete_item($db, $item_id){
 function is_open($item){
   return $item['status'] === 1;
 }
-//bind
+//エラーチェック
 function validate_item($name, $price, $stock, $filename, $status){
   $is_valid_item_name = is_valid_item_name($name);
   $is_valid_item_price = is_valid_item_price($price);
   $is_valid_item_stock = is_valid_item_stock($stock);
   $is_valid_item_filename = is_valid_item_filename($filename);
   $is_valid_item_status = is_valid_item_status($status);
-
+ //&があることで１つでもエラーになったらエラーチェックされる
   return $is_valid_item_name
     && $is_valid_item_price
     && $is_valid_item_stock
