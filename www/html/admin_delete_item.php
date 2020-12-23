@@ -13,14 +13,14 @@ if(is_logined() === false){
 $db = get_db_connect();
 
 $user = get_login_user($db);
-
+//管理者情報が間違っていたらログインページへ
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
-
+//item_idをpostで取得
 $item_id = get_post('item_id');
 
-
+//しょうひんの削除をしたらメッセージを設定
 if(destroy_item($db, $item_id) === true){
   set_message('商品を削除しました。');
 } else {

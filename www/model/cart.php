@@ -26,7 +26,7 @@ function get_user_carts($db, $user_id){
   ";
   return fetch_all_query($db, $sql);
 }
-//?上と何が違う？
+//どのユーザーが何の商品を購入したのか
 function get_user_cart($db, $user_id, $item_id){
   $sql = "
     SELECT
@@ -54,12 +54,14 @@ function get_user_cart($db, $user_id, $item_id){
   return fetch_query($db, $sql);
 
 }
-
+//カートに追加
 function add_cart($db, $user_id, $item_id ) {
   $cart = get_user_cart($db, $user_id, $item_id);
+  //カートに中身が入っていなければuser_idとitem_idを新規で取得
   if($cart === false){
     return insert_cart($db, $user_id, $item_id);
   }
+  //カートに中が入っていればしょうひんの合計数を１つ増やす
   return update_cart_amount($db, $cart['cart_id'], $cart['amount'] + 1);
 }
 //user_idをインサートすることでどのユーザーか特定、item_idをインサートすることで商品情報を特定
@@ -156,6 +158,7 @@ function validate_cart_purchase($carts){
       set_error($cart['name'] . 'は在庫が足りません。購入可能数:' . $cart['stock']);
     }
   }
+  //エラーがあった場合はtrue
   if(has_error() === true){
     return false;
   }

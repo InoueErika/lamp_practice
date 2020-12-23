@@ -27,7 +27,7 @@
             <!--カラムのヘッダー（商品名部分）-->
             <div class="card-header">
               <!--商品名-->
-              <?php print($item['name']); ?>
+              <?php print h($item['name']); ?>
             </div>
             <!--カラムのボディ（画像部分）-->
             <figure class="card-body">
