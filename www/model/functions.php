@@ -23,7 +23,7 @@ function get_post($name){
   };
   return '';
 }
-//アップロードされた画像を取得する？
+//アップロードされた画像を取得する（formから送信されたファイル）
 function get_file($name){
   if(isset($_FILES[$name]) === true){
     return $_FILES[$name];
@@ -75,7 +75,7 @@ function get_messages(){
 function is_logined(){
   return get_session('user_id') !== '';
 }
-//アップロードされたファイル名を取得する？
+//アップロードされたファイル名を取得する（ランダムに決められたファイル名を取得する）
 function get_upload_filename($file){
   if(is_valid_upload_image($file) === false){
     return '';
