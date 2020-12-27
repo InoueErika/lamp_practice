@@ -15,18 +15,21 @@ function get_db_connect(){
   }
   return $dbh;
 }
-
+//データベースから情報を配列で取得する
 function fetch_query($db, $sql, $params = array()){
   try{
+    //準備
     $statement = $db->prepare($sql);
+    //実行
     $statement->execute($params);
+    //配列で取得
     return $statement->fetch();
   }catch(PDOException $e){
     set_error('データ取得に失敗しました。');
   }
   return false;
 }
-
+//データベースから全ての情報を配列で取得する
 function fetch_all_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -37,7 +40,7 @@ function fetch_all_query($db, $sql, $params = array()){
   }
   return false;
 }
-
+//データベースの内容を更新（「fech_」は表示するために取得をする）
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
