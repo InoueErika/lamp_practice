@@ -36,7 +36,7 @@
             <td>
               <!--購入数の情報をデータベースに送る（アップデート）-->
               <form method="post" action="cart_change_amount.php">
-                <input type="text" name="amount" value="<?php print($cart['amount']); ?>">
+                <input type="number" name="amount" value="<?php print($cart['amount']); ?>">
                 個
                 <input type="submit" value="変更" class="btn btn-secondary">
                 <!--hiddenでcart_idを指定することで「変更ボタン」を押すと該当の商品の購入数を変更することができる-->
