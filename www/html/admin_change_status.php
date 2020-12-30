@@ -9,6 +9,13 @@ session_start();
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
+//トークンのチェック
+$token = get_post('token');
+if (is_valid_csrf_token($token) === false){
+  set_error('ログインに失敗しました。');
+  //ログイン画面へリダイレクト
+  redirect_to(LOGIN_URL);
+}
 //データベースに接続
 $db = get_db_connect();
 //データベースからログイン情報（user_id）を取得

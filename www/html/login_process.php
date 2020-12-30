@@ -1,4 +1,5 @@
 <?php
+//トークンをチェックする
 require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
@@ -12,6 +13,13 @@ if(is_logined() === true){
 $name = get_post('name');
 //パスワードを設定
 $password = get_post('password');
+//トークンのチェック
+$token = get_post('token');
+if (is_valid_csrf_token($token) === false){
+  set_error('ログインに失敗しました。');
+  //ログイン画面へリダイレクト
+  redirect_to(LOGIN_URL);
+}
 //データベースに接続
 $db = get_db_connect();
 

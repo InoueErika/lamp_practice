@@ -41,6 +41,7 @@
                 <input type="submit" value="変更" class="btn btn-secondary">
                 <!--hiddenでcart_idを指定することで「変更ボタン」を押すと該当の商品の購入数を変更することができる-->
                 <input type="hidden" name="cart_id" value="<?php print($cart['cart_id']); ?>">
+                <input type="hidden" value="<?php print $token ?>" name="token">
               </form>
             </td>
             <!--金額と購入数を掛けて小計を出す-->
@@ -51,6 +52,7 @@
                 <input type="submit" value="削除" class="btn btn-danger delete">
                 <!--hiddenでcart_idを指定することで「削除ボタン」を押すと該当の商品をカートから削除ことができる-->
                 <input type="hidden" name="cart_id" value="<?php print($cart['cart_id']); ?>">
+                <input type="hidden" value="<?php print $token ?>" name="token">
               </form>
 
             </td>
@@ -63,6 +65,7 @@
       <!--購入情報をデータベースに送る。ストックの変更（アップデート）-->
       <form method="post" action="finish.php">
         <input class="btn btn-block btn-primary" type="submit" value="購入する">
+        <input type="hidden" value="<?php print $token ?>" name="token">
       </form>
     <?php } else { ?>
       <p>カートに商品はありません。</p>

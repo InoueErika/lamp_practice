@@ -14,6 +14,13 @@ $name = get_post('name');
 $password = get_post('password');
 //確認用パスワードを設定
 $password_confirmation = get_post('password_confirmation');
+//トークンのチェック
+$token = get_post('token');
+if (is_valid_csrf_token($token) === false){
+  set_error('ログインに失敗しました。');
+  //ログイン画面へリダイレクト
+  redirect_to(LOGIN_URL);
+}
 //データベースに接続
 $db = get_db_connect();
 //ユーザー情報を登録（インサート）
