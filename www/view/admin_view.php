@@ -42,6 +42,7 @@
         <select class="form-control" name="status" id="status">
           <option value="open">公開</option>
           <option value="close">非公開</option>
+          <input type="hidden" value="<?php print $token ?>" name="token">
         </select>
       </div>
       
@@ -79,6 +80,7 @@
                 <input type="submit" value="変更" class="btn btn-secondary">
                 <!--hiddenでitem_idを指定することで「変更ボタン」を押すと該当の商品のストックを変更することができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" value="<?php print $token ?>" name="token">
               </form>
             </td>
             <td>
@@ -93,12 +95,14 @@
                 <?php } ?>
                 <!--hiddenでitem_idを指定することで「公開・非公開ボタン」を押すと該当の商品の公開・非公開を変更することができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" value="<?php print $token ?>" name="token">
               </form>
               <!--商品情報削除のための情報をデータベースに送る（デリート）-->
               <form method="post" action="admin_delete_item.php">
                 <input type="submit" value="削除" class="btn btn-danger delete">
                 <!--hiddenでitem_idを指定することで「削除ボタン」を押すと該当の商品の削除をすることができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" value="<?php print $token ?>" name="token">
               </form>
 
             </td>

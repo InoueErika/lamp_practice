@@ -19,6 +19,7 @@
       <div class="form-group">
         <label for="name">名前: </label>
         <input type="text" name="name" id="name" class="form-control">
+        <input type="hidden" value="<?php print $token ?>" name="token">
       </div>
       <div class="form-group">
         <label for="password">パスワード: </label>

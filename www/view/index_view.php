@@ -42,8 +42,9 @@
                   <!--カートに追加のための情報をデータベースに送る（アップデート）-->
                   <form action="index_add_cart.php" method="post">
                     <input type="submit" value="カートに追加" class="btn btn-primary btn-block">
-                    <!--hiddenでitem_idを指定することで「変更ボタン」を押すと該当の商品をカートに入れることができる-->
+                    <!--hiddenでitem_idを指定することで「カートに追加」を押すと該当の商品をカートに入れることができる-->
                     <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                    <input type="hidden" value="<?php print $token ?>" name="token">
                   </form>
                 <?php } else { ?>
                   <!--ストックが０なら（<0）-->

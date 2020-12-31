@@ -10,8 +10,11 @@ if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
 
+//トークンを生成する処理
+$token = get_csrf_token();
+//データベースに接続
 $db = get_db_connect();
-
+//データベースからログイン情報（user_id）を取得
 $user = get_login_user($db);
 
 if(is_admin($user) === false){
