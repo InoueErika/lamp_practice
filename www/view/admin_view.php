@@ -24,22 +24,18 @@
       <div class="form-group">
         <label for="name">名前: </label>
         <input class="form-control" type="text" name="name" id="name">
-        <input type="hidden" value="<?php print $token ?>" name="token">
       </div>
       <div class="form-group">
         <label for="price">価格: </label>
         <input class="form-control" type="number" name="price" id="price">
-        <input type="hidden" value="<?php print $token ?>" name="token">
       </div>
       <div class="form-group">
         <label for="stock">在庫数: </label>
         <input class="form-control" type="number" name="stock" id="stock">
-        <input type="hidden" value="<?php print $token ?>" name="token">
       </div>
       <div class="form-group">
         <label for="image">商品画像: </label>
         <input type="file" name="image" id="image">
-        <input type="hidden" value="<?php print $token ?>" name="token">
       </div>
       <div class="form-group">
         <label for="status">ステータス: </label>
@@ -80,7 +76,6 @@
                   <!-- sqlインジェクション確認のためあえてtext -->
                   <input  type="text" name="stock" value="<?php print($item['stock']); ?>">
                   個
-                  <input type="hidden" value="<?php print $token ?>" name="token">
                 </div>
                 <input type="submit" value="変更" class="btn btn-secondary">
                 <!--hiddenでitem_idを指定することで「変更ボタン」を押すと該当の商品のストックを変更することができる-->
@@ -94,11 +89,9 @@
                 <?php if(is_open($item) === true){ ?>
                   <input type="submit" value="公開 → 非公開" class="btn btn-secondary">
                   <input type="hidden" name="changes_to" value="close">
-                  <input type="hidden" value="<?php print $token ?>" name="token">
                 <?php } else { ?>
                   <input type="submit" value="非公開 → 公開" class="btn btn-secondary">
                   <input type="hidden" name="changes_to" value="open">
-                  <input type="hidden" value="<?php print $token ?>" name="token">
                 <?php } ?>
                 <!--hiddenでitem_idを指定することで「公開・非公開ボタン」を押すと該当の商品の公開・非公開を変更することができる-->
                 <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">

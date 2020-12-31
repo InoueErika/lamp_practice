@@ -15,8 +15,8 @@ if(is_logined() === false){
 $token = get_post('token');
 if (is_valid_csrf_token($token) === false){
   set_error('ログインに失敗しました。');
-  //ログイン画面へリダイレクト
-  redirect_to(LOGIN_URL);
+  //カート画面へリダイレクト
+  redirect_to(CART_URL);
 }
 
 $db = get_db_connect();

@@ -18,8 +18,8 @@ $password_confirmation = get_post('password_confirmation');
 $token = get_post('token');
 if (is_valid_csrf_token($token) === false){
   set_error('ログインに失敗しました。');
-  //ログイン画面へリダイレクト
-  redirect_to(LOGIN_URL);
+  //サインアップ画面へリダイレクト
+  redirect_to(SIGNUP_URL);
 }
 //データベースに接続
 $db = get_db_connect();
