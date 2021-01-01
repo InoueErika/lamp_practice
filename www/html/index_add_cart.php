@@ -14,7 +14,7 @@ if(is_logined() === false){
 //トークンのチェック
 $token = get_post('token');
 if (is_valid_csrf_token($token) === false){
-  set_error('ログインに失敗しました。');
+  set_error('カートの更新に失敗しました。');
   //ホーム画面へリダイレクト
   redirect_to(HOME_URL);
 }
