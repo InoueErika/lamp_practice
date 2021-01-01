@@ -17,7 +17,7 @@ $password_confirmation = get_post('password_confirmation');
 //トークンのチェック
 $token = get_post('token');
 if (is_valid_csrf_token($token) === false){
-  set_error('ログインに失敗しました。');
+  set_error('ユーザー登録に失敗しました。');
   //サインアップ画面へリダイレクト
   redirect_to(SIGNUP_URL);
 }

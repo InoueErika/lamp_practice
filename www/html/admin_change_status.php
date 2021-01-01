@@ -12,7 +12,7 @@ if(is_logined() === false){
 //トークンのチェック
 $token = get_post('token');
 if (is_valid_csrf_token($token) === false){
-  set_error('ログインに失敗しました。');
+  set_error('ステータスの変更に失敗しました。');
   //管理画面へリダイレクト
   redirect_to(ADMIN_URL);
 }
