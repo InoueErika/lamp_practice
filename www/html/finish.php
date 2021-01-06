@@ -18,13 +18,14 @@ if (is_valid_csrf_token($token) === false){
   //ログイン画面へリダイレクト
   redirect_to(LOGIN_URL);
 }
-
+//データベースに接続
 $db = get_db_connect();
+//データベースからログイン情報（user_id）を取得
 $user = get_login_user($db);
 //カート内の全商品を全て取得（購入のため）
 $carts = get_user_carts($db, $user['user_id']);
 //購入できなかった場合エラーメッセージを設定
-if(purchase_carts($db, $carts) === false){
+if(purchase_carts($db, $carts,$user['user_id']) === false){
   set_error('商品が購入できませんでした。');
   redirect_to(CART_URL);
 } 

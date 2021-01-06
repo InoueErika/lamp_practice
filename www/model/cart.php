@@ -94,7 +94,7 @@ function update_cart_amount($db, $cart_id, $amount){
   $params = [$amount, $cart_id];
   return execute_query($db, $sql, $params);
 }
-//カートの中身をデリート
+//カートから特定の商品をデリート
 function delete_cart($db, $cart_id){
   $sql = "
     DELETE FROM
@@ -107,10 +107,26 @@ function delete_cart($db, $cart_id){
   return execute_query($db, $sql, $params);
 }
 
-function purchase_carts($db, $carts){
+function purchase_carts($db, $carts, $user_id){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  //ここからトランザクション
+  $db->beginTransaction();
+  if (count($error) === 0){
+  //purchase_historyにインサート
+  $sql = "
+    INSERT INTO 
+      Purchase_history
+      (user_id)
+    VALUES
+      (?)";
+  $params = [$user_id];
+  if(execute_query($db, $sql, $params) === false){
+    return false;
+  }
+  $Purchase_history = $db->lastInsertId('id');//idをとってくる
+
   //商品を購入後、ストック数を減らす
   foreach($carts as $cart){
     if(update_item_stock(
@@ -120,8 +136,25 @@ function purchase_carts($db, $carts){
       ) === false){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
+    //purchase_detailにインサートする
+    $sql = "
+    INSERT INTO 
+    Purchase_details
+      (item_id,Purchase_history,price,amount)
+    VALUES
+      (?,?,?,?)";
+    $params = [$cart['item_id'],$Purchase_history,$cart['price'],$cart['amount']];
+    if (execute_query($db, $sql, $params) === false){
+      return false;
+    }
   }
-  //ユーザー情報を消去する
+  $db->commit();
+  return true;
+  }
+  $db->rollback();
+  return false;
+  //ここまでトランザクション
+  //特定のユーザーの商品を消去する
   delete_user_carts($db, $carts[0]['user_id']);
 }
 //ユーザー情報を消去する（次回ログインして商品をカートに入れた時、カート内に前回購入した商品を残さないようにするため）
