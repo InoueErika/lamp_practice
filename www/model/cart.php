@@ -113,7 +113,6 @@ function purchase_carts($db, $carts, $user_id){
   }
   //ここからトランザクション
   $db->beginTransaction();
-  if (count($error) === 0){
   //purchase_historyにインサート
   $sql = "
     INSERT INTO 
@@ -148,11 +147,13 @@ function purchase_carts($db, $carts, $user_id){
       return false;
     }
   }
+  if(has_error() === true){
+    $db->rollback();
+    return false;
+  }
   $db->commit();
   return true;
-  }
-  $db->rollback();
-  return false;
+
   //ここまでトランザクション
   //特定のユーザーの商品を消去する
   delete_user_carts($db, $carts[0]['user_id']);
