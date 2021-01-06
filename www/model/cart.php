@@ -147,16 +147,18 @@ function purchase_carts($db, $carts, $user_id){
       return false;
     }
   }
+  //エラーだったらロールバック
   if(has_error() === true){
     $db->rollback();
     return false;
   }
-  $db->commit();
-  return true;
-
   //ここまでトランザクション
   //特定のユーザーの商品を消去する
   delete_user_carts($db, $carts[0]['user_id']);
+  //エラーがなければコミット
+  $db->commit();
+  return true;
+  
 }
 //ユーザー情報を消去する（次回ログインして商品をカートに入れた時、カート内に前回購入した商品を残さないようにするため）
 function delete_user_carts($db, $user_id){
