@@ -151,12 +151,11 @@ function purchase_carts($db, $carts, $user_id){
   if(has_error() === true){
     $db->rollback();
     return false;
-  }
+  } $db->commit();
   //ここまでトランザクション
   //特定のユーザーの商品を消去する
   delete_user_carts($db, $carts[0]['user_id']);
   //エラーがなければコミット
-  $db->commit();
   return true;
   
 }
