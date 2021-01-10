@@ -21,6 +21,5 @@ $histories = get_purchase_history($db, $user['user_id']);
 if($histories === false){
   set_error('購入履歴情報を取得できませんでした。');
 } 
-$total_history_price = sum_histories($db, $user['user_id']);
 
 include_once '../view/purchase_history_view.php';

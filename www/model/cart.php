@@ -166,8 +166,7 @@ function get_purchase_history($db, $user_id){
       Purchase_history.id,
       Purchase_history.create_datetime,
       Purchase_history.user_id,
-      Purchase_details.amount, 
-      Purchase_details.price
+      SUM(Purchase_details.amount)
     FROM
       Purchase_history
     INNER JOIN
@@ -180,26 +179,8 @@ function get_purchase_history($db, $user_id){
       Purchase_history.id = Purchase_details.Purchase_history
     WHERE
       users.user_id = ?
-  ";
-  $params = [$user_id];
-  return fetch_all_query($db, $sql, $params);
-}
-function sum_histories($db, $user_id){
-  $sql = "
-    SELECT 
-      SUM(price)  
-    FROM 
-      Purchase_history 
-    INNER JOIN 
-      users 
-    ON 
-      Purchase_history.user_id = users.user_id 
-    INNER JOIN 
-      Purchase_details 
-    ON 
-      Purchase_history.id = Purchase_details.Purchase_history 
-    WHERE 
-      users.user_id = ?
+    GROUP BY
+      id
     ";
   $params = [$user_id];
   return fetch_all_query($db, $sql, $params);
