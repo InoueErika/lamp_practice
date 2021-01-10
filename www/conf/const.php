@@ -22,6 +22,7 @@ define('CART_URL', '/cart.php');
 define('FINISH_URL', '/finish.php');
 define('ADMIN_URL', '/admin.php');
 define('PURCHASE_HISTORY_URL', '/purchase_history.php');
+define('PURCHASE_DETAILS_URL', '/purchase_details.php');
 
 define('REGEXP_ALPHANUMERIC', '/\A[0-9a-zA-Z]+\z/');
 define('REGEXP_POSITIVE_INTEGER', '/\A([1-9][0-9]*|0)\z/');

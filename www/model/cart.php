@@ -166,7 +166,7 @@ function get_purchase_history($db, $user_id){
       Purchase_history.id,
       Purchase_history.create_datetime,
       Purchase_history.user_id,
-      SUM(Purchase_details.amount)
+      SUM(Purchase_details.amount * Purchase_details.price)
     FROM
       Purchase_history
     INNER JOIN

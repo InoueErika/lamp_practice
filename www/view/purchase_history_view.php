@@ -20,9 +20,9 @@
         <!--見出しに色をつける-->
         <thead class="thead-light">
           <tr>
-            <th>購入履歴id</th>
-            <th>購入時間</th>
-            <th>購入金額</th>
+            <th>注文番号</th>
+            <th>購入日時</th>
+            <th>該当の注文の合計金額</th>
           </tr>
         </thead>
         <tbody>
@@ -31,17 +31,15 @@
           <tr>
             <td><?php print($history['id']); ?></td>
             <td><?php print($history['create_datetime']); ?></td>
-            <td><?php print($history['price']); ?></td>
+            <td><?php print($history['SUM(Purchase_details.amount * Purchase_details.price)']); ?></td>
           </tr>
           <?php } ?>
         </tbody>
       </table>
-      <?php foreach($total_history_price as $total_history){ ?>
-        <p class="text-right">合計金額: <?php print($total_history['SUM(price)']); ?>円</p>
-      <?php } ?>
     <?php } else { ?>
       <p>カートに商品はありません。</p>
     <?php } ?> 
+    <a class="nav-link" href="<?php print(PURCHASE_DETAILS_URL);?>">購入詳細画面</a>
   </div>
 </body>
 </html>
