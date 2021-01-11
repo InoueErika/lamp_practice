@@ -118,6 +118,5 @@
   <script>
     $('.delete').on('click', () => confirm('本当に削除しますか？'))
   </script>
-  <a class="nav-link" href="<?php print(PURCHASE_HISTORY_URL);?>">購入履歴画面</a>
 </body>
 </html>

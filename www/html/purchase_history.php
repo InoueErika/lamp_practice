@@ -21,5 +21,6 @@ $histories = get_purchase_history($db, $user['user_id']);
 if($histories === false){
   set_error('購入履歴情報を取得できませんでした。');
 } 
-
+//注文履歴データを取得した順にする
+$histories = array_reverse($histories);
 include_once '../view/purchase_history_view.php';
