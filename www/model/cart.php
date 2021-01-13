@@ -151,15 +151,128 @@ function purchase_carts($db, $carts, $user_id){
   if(has_error() === true){
     $db->rollback();
     return false;
-  }
+  } $db->commit();
   //ここまでトランザクション
   //特定のユーザーの商品を消去する
   delete_user_carts($db, $carts[0]['user_id']);
   //エラーがなければコミット
-  $db->commit();
   return true;
-  
 }
+
+function get_purchase_history($db, $user){
+  if(is_admin($user)){
+    $sql = "
+      SELECT
+        Purchase_history.id,
+        Purchase_history.create_datetime,
+        Purchase_history.user_id,
+        SUM(Purchase_details.amount * Purchase_details.price)
+      FROM
+        Purchase_history
+      INNER JOIN
+        users
+      ON
+        Purchase_history.user_id = users.user_id
+      INNER JOIN 
+        Purchase_details
+      ON 
+        Purchase_history.id = Purchase_details.Purchase_history
+      GROUP BY
+        id
+      ORDER BY
+        id DESC
+      ";
+    return fetch_all_query($db, $sql);
+  } else {
+    $sql = "
+      SELECT
+        Purchase_history.id,
+        Purchase_history.create_datetime,
+        Purchase_history.user_id,
+        SUM(Purchase_details.amount * Purchase_details.price)
+      FROM
+        Purchase_history
+      INNER JOIN
+        users
+      ON
+        Purchase_history.user_id = users.user_id
+      INNER JOIN 
+        Purchase_details
+      ON 
+        Purchase_history.id = Purchase_details.Purchase_history
+      WHERE
+        users.user_id = ?
+      GROUP BY
+        id
+      ORDER BY
+        id DESC
+      ";
+    $params = [$user['user_id']];
+    return fetch_all_query($db, $sql, $params); 
+  }
+}
+function get_history($db,$Purchase_history){
+  $sql ="
+  SELECT
+        Purchase_history.id,
+        Purchase_history.create_datetime,
+        Purchase_history.user_id,
+        SUM(Purchase_details.amount * Purchase_details.price)
+      FROM
+        Purchase_history
+      INNER JOIN
+        users
+      ON
+        Purchase_history.user_id = users.user_id
+      INNER JOIN 
+        Purchase_details
+      ON 
+        Purchase_history.id = Purchase_details.Purchase_history
+      WHERE
+        Purchase_details.Purchase_history = ?
+      GROUP BY
+        id
+      ";
+      $params = [$Purchase_history];
+  return fetch_query($db, $sql, $params); 
+}
+
+function get_purchase_details($db, $user_id, $Purchase_history){
+  $sql = "
+    SELECT
+      Purchase_history.id,
+      Purchase_history.user_id,
+      Purchase_details.item_id,
+      Purchase_details.price,
+      Purchase_details.amount,
+      items.item_id,
+      items.name,
+      Purchase_details.amount * Purchase_details.price
+    FROM
+      Purchase_history
+    INNER JOIN
+      users
+    ON
+      Purchase_history.user_id = users.user_id
+    INNER JOIN 
+      Purchase_details
+    ON 
+      Purchase_history.id = Purchase_details.Purchase_history
+    INNER JOIN
+      items
+    ON
+      items.item_id = Purchase_details.item_id
+    WHERE
+      users.user_id = ?
+    AND 
+      Purchase_details.Purchase_history = ?
+    ORDER BY
+      id DESC
+    ";
+  $params = [$user_id, $Purchase_history];
+  return fetch_all_query($db, $sql, $params); 
+}
+
 //ユーザー情報を消去する（次回ログインして商品をカートに入れた時、カート内に前回購入した商品を残さないようにするため）
 function delete_user_carts($db, $user_id){
   $sql = "
