@@ -18,7 +18,6 @@ $user = get_login_user($db);
 //ログインユーザーの購入履歴を全て取得
 $Purchase_history = get_get('id');
 $details = get_purchase_details($db, $user['user_id'], $Purchase_history);
-$histories = get_purchase_history($db, $user);
 $history = get_history($db, $Purchase_history);
 //購入履歴情報を取得できなければエラーメッセージを設定
 if($details === false){

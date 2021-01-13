@@ -160,8 +160,6 @@ function purchase_carts($db, $carts, $user_id){
 }
 
 function get_purchase_history($db, $user){
-  //ここからトランザクション
-  $db->beginTransaction();
   if(is_admin($user)){
     $sql = "
       SELECT
@@ -212,15 +210,6 @@ function get_purchase_history($db, $user){
     $params = [$user['user_id']];
     return fetch_all_query($db, $sql, $params); 
   }
-  //エラーだったらロールバック
-  if(has_error() === true){
-    $db->rollback();
-    return false;
-  }
-  //ここまでトランザクション
-  //エラーがなければコミット
-  $db->commit();
-  return true;
 }
 function get_history($db,$Purchase_history){
   $sql ="
