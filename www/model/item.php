@@ -208,3 +208,25 @@ function is_valid_item_status($status){
   }
   return $is_valid;
 }
+//人気ランキング上位３位
+function get_top_three($db){
+  $sql = "
+    SELECT
+      Purchase_details.item_id,
+      SUM(Purchase_details.amount),
+      items.name
+    FROM
+      Purchase_details
+    INNER JOIN
+      items
+    ON
+      items.item_id = Purchase_details.item_id
+    GROUP BY
+      item_id
+    ORDER BY
+      SUM(Purchase_details.amount)DESC
+    LIMIT
+      3
+    ";
+  return fetch_all_query($db, $sql);  
+}

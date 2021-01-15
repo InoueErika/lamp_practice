@@ -213,26 +213,26 @@ function get_purchase_history($db, $user){
 }
 function get_history($db,$Purchase_history){
   $sql ="
-  SELECT
-        Purchase_history.id,
-        Purchase_history.create_datetime,
-        Purchase_history.user_id,
-        SUM(Purchase_details.amount * Purchase_details.price)
-      FROM
-        Purchase_history
-      INNER JOIN
-        users
-      ON
-        Purchase_history.user_id = users.user_id
-      INNER JOIN 
-        Purchase_details
-      ON 
-        Purchase_history.id = Purchase_details.Purchase_history
-      WHERE
-        Purchase_details.Purchase_history = ?
-      GROUP BY
-        id
-      ";
+    SELECT
+      Purchase_history.id,
+      Purchase_history.create_datetime,
+      Purchase_history.user_id,
+      SUM(Purchase_details.amount * Purchase_details.price)
+    FROM
+      Purchase_history
+    INNER JOIN
+      users
+    ON
+      Purchase_history.user_id = users.user_id
+    INNER JOIN 
+      Purchase_details
+    ON 
+      Purchase_history.id = Purchase_details.Purchase_history
+    WHERE
+      Purchase_details.Purchase_history = ?
+    GROUP BY
+      id
+    ";
       $params = [$Purchase_history];
   return fetch_query($db, $sql, $params); 
 }
@@ -272,6 +272,7 @@ function get_purchase_details($db, $user_id, $Purchase_history){
   $params = [$user_id, $Purchase_history];
   return fetch_all_query($db, $sql, $params); 
 }
+
 
 //ユーザー情報を消去する（次回ログインして商品をカートに入れた時、カート内に前回購入した商品を残さないようにするため）
 function delete_user_carts($db, $user_id){
