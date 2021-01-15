@@ -57,8 +57,14 @@
       <?php } ?>
       </div>
     </div>
+    <h2>商品人気ランキング</h2>
+  <?php foreach($top_three as $top){ ?>
+    <p><?php print $i++ ; ?>位　<?php print h($top['name']); ?></p>
+  <?php } ?>
   </div>
-  
+
+
+
 </body>
 </html>
 
